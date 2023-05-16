@@ -2,3 +2,4 @@ postgre.txt
 .history/
 .env
 node_modules/
+requests/
