@@ -1,11 +1,13 @@
 const express = require("express")
 require("express-async-errors")
 const blogsRouter = require("./routes/blogs")
+const usersRouter = require("./routes/users")
 const app = express()
 
 app.use(express.json())
 
 app.use("/api/blogs", blogsRouter)
+app.use("/api/users", usersRouter)
 
 const errorHandler = (error, request, response, next) => {
     console.error(error.name)
