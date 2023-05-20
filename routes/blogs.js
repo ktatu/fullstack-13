@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
         return res.json(blogs)
     } catch (error) {
         console.log("error ", error)
-        return res.status(400).json({ error: error })
+        return res.status(400).json({ error })
     }
 })
 

@@ -8,12 +8,10 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        console.log("req body ", req.body)
         const user = await User.create(req.body)
         return res.json(user)
     } catch (error) {
-        console.log("error ", error)
-        return res.status(400).json({ error })
+        return res.status(400).json({ error: error.message })
     }
 })
 
@@ -24,7 +22,7 @@ router.put("/:username", async (req, res) => {
         user.save()
         return res.status(201).end()
     } catch (error) {
-        return res.status(400).json({ error })
+        return res.status(400).json({ error: error.message })
     }
 })
 
