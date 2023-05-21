@@ -48,8 +48,13 @@ router.post("/", tokenExtractor, async (req, res) => {
     }
 })
 
-router.delete("/:id", blogFinder, async (req, res) => {
+router.delete("/:id", blogFinder, tokenExtractor, async (req, res) => {
     if (req.blog) {
+        const user = await User.findByPk(req.decodedToken.id)
+
+        if (user.id !== req.blog.userId) {
+            return res.status(400).json({ error: "Invalid credentials" })
+        }
         req.blog.destroy()
     }
     res.status(204).end()
