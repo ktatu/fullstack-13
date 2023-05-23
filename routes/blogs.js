@@ -2,7 +2,7 @@ const router = require("express").Router()
 const { Blog, User } = require("../models")
 const jwt = require("jsonwebtoken")
 const { SECRET } = require("../utils/config")
-const { Op } = require("sequelize")
+const { Op, fn, w } = require("sequelize")
 
 const blogFinder = async (req, res, next) => {
     req.blog = await Blog.findByPk(req.params.id)
@@ -27,10 +27,23 @@ const tokenExtractor = (req, res, next) => {
 
 router.get("/", async (req, res) => {
     try {
-        const where = {}
+        let where = {}
 
         if (req.query.search) {
-            where.title = { [Op.substring]: req.query.search }
+            where = {
+                [Op.or]: [
+                    {
+                        author: {
+                            [Op.iLike]: `%${req.query.search}%`,
+                        },
+                    },
+                    {
+                        title: {
+                            [Op.iLike]: `%${req.query.search}%`,
+                        },
+                    },
+                ],
+            }
         }
 
         const blogs = await Blog.findAll({
@@ -40,7 +53,7 @@ router.get("/", async (req, res) => {
         })
         return res.json(blogs)
     } catch (error) {
-        return res.status(400).json({ error })
+        return res.status(400).json({ error: error.message })
     }
 })
 
