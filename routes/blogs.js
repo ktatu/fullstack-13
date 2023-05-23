@@ -2,7 +2,7 @@ const router = require("express").Router()
 const { Blog, User } = require("../models")
 const jwt = require("jsonwebtoken")
 const { SECRET } = require("../utils/config")
-const { Op, fn, col } = require("sequelize")
+const { Op } = require("sequelize")
 
 const blogFinder = async (req, res, next) => {
     req.blog = await Blog.findByPk(req.params.id)
