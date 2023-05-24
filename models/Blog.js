@@ -28,6 +28,16 @@ Blog.init(
                 min: 0,
             },
         },
+        year: {
+            type: DataTypes.INTEGER,
+            validate: {
+                numberValidator(value) {
+                    if (value < 1991 || value > parseInt(new Date().getFullYear())) {
+                        throw new Error("Blog's year must be between 1991 and the current year")
+                    }
+                },
+            },
+        },
     },
     {
         sequelize,
