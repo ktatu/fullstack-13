@@ -30,31 +30,28 @@ router.put("/:username", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        /*
-        const user = await User.findByPk(req.params.id, {
-            include: [
-                {
-                    model: Blog,
-                    as: "readings",
-                    attributes: { exclude: ["userId", "createdAt", "updatedAt"] },
-                    through: { attributes: [] },
-                    include: [ReadingList],
-                },
-            ],
-            attributes: { exclude: ["createdAt", "updatedAt"] },
-        })*/
+        let where = {}
+
+        if (req.query.read) {
+            where = { read: req.query.read }
+        }
+
         const user = await User.findByPk(req.params.id, {
             include: {
                 model: Blog,
                 as: "readings",
                 attributes: { exclude: ["userId", "createdAt", "updatedAt"] },
-                through: { attributes: { exclude: ["userId", "blogId"] }, as: "readinglist" },
+                through: {
+                    attributes: { exclude: ["userId", "blogId"] },
+                    as: "readinglist",
+                    where,
+                },
             },
             attributes: { exclude: ["createdAt", "updatedAt"] },
         })
         return res.json(user)
     } catch (error) {
-        return res.status(401).json({ error })
+        return res.status(401).json({ error: error.message })
     }
 })
 
