@@ -21,12 +21,14 @@ const runMigrations = async () => {
 
 const connectToDatabase = async () => {
     try {
+        await sequelize.sync()
         await sequelize.authenticate()
+        console.log("authenticated")
         await runMigrations()
         console.log("database connected")
     } catch (err) {
         console.log("connecting database failed")
-        console.log(err.message)
+        console.log(err)
         return process.exit(1)
     }
 

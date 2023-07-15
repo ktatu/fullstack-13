@@ -8,7 +8,8 @@
         "start": "node index.js",
         "start:dev": "nodemon index.js",
         "db:proxy": "flyctl proxy 5432 -a bitter-river-754-db",
-        "db:connect": "flyctl postgres connect -a bitter-river-754-db"
+        "db:fly": "flyctl postgres connect -a bitter-river-754-db",
+        "db:docker": "docker exec -it 7831 psql -U postgres postgres"
     },
     "author": "",
     "license": "ISC",
