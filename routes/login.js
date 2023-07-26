@@ -1,4 +1,4 @@
-const User = require("../models/user")
+const { User, Session } = require("../models")
 const router = require("express").Router()
 const jwt = require("jsonwebtoken")
 const { SECRET } = require("../utils/config")
@@ -21,7 +21,12 @@ router.post("/", async (req, res) => {
 
     const token = jwt.sign(userForToken, SECRET)
 
-    return res.status(200).send({ token, username: user.username, name: user.name })
+    console.log("token ", token)
+
+    const result = await Session.create({ token })
+    console.log("res ", result)
+
+    return res.status(200).send({ token })
 })
 
 module.exports = router
