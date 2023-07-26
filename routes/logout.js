@@ -2,7 +2,9 @@ const router = require("express").Router()
 const { Session } = require("../models")
 
 router.delete("/", async (req, res) => {
-    const token = req.get("authorization")
+    const token = req.get("authorization").substring(7)
+
+    console.log("token ", token)
 
     await Session.destroy({
         where: {
