@@ -15,15 +15,15 @@ module.exports = {
             token: {
                 type: DataTypes.TEXT,
             },
-        })
-        await queryInterface.addColumn("users", "session_id", {
-            type: DataTypes.INTEGER,
-            references: { model: "sessions", key: "id" },
+            user_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: { model: "users", key: "id" },
+            },
         })
     },
     down: async ({ context: queryInterface }) => {
-        await queryInterface.removeColumn("users", "disabled")
-        await queryInterface.removeColumn("users", "session_id")
         await queryInterface.dropTable("sessions")
+        await queryInterface.removeColumn("users", "disabled")
     },
 }
